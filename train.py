@@ -33,7 +33,6 @@ parser.add_argument('--train_file', type=str, default='./data/train2019.json')
 parser.add_argument('--val_file', type=str, default='./data/val2019.json')
 parser.add_argument('--test_file', type=str, default='./data/test2019.json')
 parser.add_argument('--data_root', type=str, default='./data/')
-parser.add_argument('--output_file', type=str, default='output.csv')
 parser.add_argument('--epochs', type=int, default=10)
 parser.add_argument('--epochs_ft', type=int, default=10)
 parser.add_argument('--size', type=int, default=560)
@@ -47,7 +46,7 @@ parser.add_argument('--weight_decay', type=int, default=1e-4)
 parser.add_argument('--lr_decay_rate', type=int, default=2)
 parser.add_argument('--lr_decay_rate_ft', type=int, default=4)
 parser.add_argument('--n_workers', type=int, default=4)
-parser.add_argument('--ft_clip', type=int, default=165696)
+parser.add_argument('--ft_clip', type=int, default=4)
 
 args = parser.parse_args()
 
@@ -155,7 +154,6 @@ train_file = args.train_file
 val_file = args.val_file
 test_file = args.test_file    
 data_root = args.data_root    
-output_file = args.output_file          
 resume = args.checkpoint
 
 img_size = args.size
@@ -189,7 +187,7 @@ with open('./data/class_weights', 'rb') as f:
     class_weights = pickle.load(f)
 
 class_weights = torch.DoubleTensor(class_weights)
-sampler = torch.utils.data.WeightedRandomSampler(class_weights, len(train_data) // 4, replacement=True)
+sampler = torch.utils.data.WeightedRandomSampler(class_weights, len(train_data) // ft_clip, replacement=True)
 train_ft_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, sampler=sampler, num_workers=n_workers, pin_memory=True)
 
 val_data = load_dataset.INAT(data_root, val_file, is_train=False, size=img_size)
