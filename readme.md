@@ -3,7 +3,7 @@ Training code for an Inception 3 model on the iNaturalist 2019 fine grain classi
 dataset. 
 
 After 30 training epochs and 46 fine-tuning the model achieved an accuracy of 72.3% on the
-test set which was 47th in the [Kaggle
+test set which was 47th (out of 214) in the [Kaggle
 competition](https://www.kaggle.com/c/inaturalist-2019-fgvc6/leaderboard).  
 
 Techniques used on the network are:
